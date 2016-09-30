@@ -83,6 +83,11 @@ public class Personaje {
 		return puntosTotales;
 	}
 
+	@Override
+	public boolean equals(Object per) {
+		return per instanceof Personaje && ((Personaje)per).getCodPersonaje() == this.getCodPersonaje();
+	}
+
 	private boolean validarPuntosVida(int vida) {
 		return vida >= 0 && getEnergia() + getDefensa() + getEvasion() + vida <= getPuntosTotales();
 	}

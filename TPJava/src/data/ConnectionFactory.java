@@ -9,9 +9,9 @@ public class ConnectionFactory {
 	private String dbDriver="com.mysql.jdbc.Driver";
 	private String host="localhost";
 	private String port="3306";
-	private String user="java2016";
-	private String pass="java";
-	private String db="java2016";
+	private String user="root";
+	private String pass="";
+	private String db="turn_based_combat";
 	private String dbType="mysql";
 
 	private Connection conn;

@@ -66,10 +66,9 @@ public class DataPersonaje {
 			stmt.execute();
 		} catch (SQLException e) {
 			throw new ApplicationException("Error actualizando personaje", e);
-		} catch (ApplicationException e) {
-			// TODO Auto-generated catch block
+		} /*catch (ApplicationException e) {
 			throw new ApplicationException("Error actualizando personaje", e);
-		}
+		}*/
 		finally {
 			try {
 				if (stmt != null) stmt.close();
@@ -93,10 +92,9 @@ public class DataPersonaje {
 			}
 		} catch (SQLException e) {
 			throw new ApplicationException("Error eliminando personaje", e);
-		} catch (ApplicationException e) {
-			// TODO Auto-generated catch block
+		} /*catch (ApplicationException e) {
 			throw new ApplicationException("Error eliminando personaje", e);
-		}
+		}*/
 		finally {
 			try {
 				if (stmt != null) stmt.close();

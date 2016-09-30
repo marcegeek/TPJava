@@ -2,7 +2,7 @@ package business.logic;
 
 import util.ApplicationException;
 import business.entities.Personaje;
-import data.DataPersonaje;
+import nonpersistentData.DataPersonaje;
 
 public class CtrlABMCPersonaje {
 	private DataPersonaje dataPer;
