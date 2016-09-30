@@ -25,13 +25,13 @@ public class ConnectionFactory {
 		}
 	}
 
-	private static ConnectionFactory instancia;
+	private static ConnectionFactory instance;
 	
-	public static ConnectionFactory getInstancia() throws ApplicationException{
-		if (instancia==null){
-			instancia = new ConnectionFactory();
+	public static ConnectionFactory getInstance() throws ApplicationException{
+		if (instance==null){
+			instance = new ConnectionFactory();
 		}
-		return instancia;
+		return instance;
 	}
 
 	public Connection getConn() throws ApplicationException {
