@@ -1,6 +1,7 @@
 package nonpersistentData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import util.ApplicationException;
 import business.entities.Personaje;
@@ -19,6 +20,30 @@ public class DataPersonaje {
 		else {
 			throw new ApplicationException("El personaje ya existe");
 		}
+	}
+
+	public List<Personaje> getAll() {
+		return personajes;
+	}
+
+	public Personaje getByCod(Personaje per) {
+		Personaje p = null;
+		int i = personajes.indexOf(per);
+		if (i >= 0) {
+			p = personajes.get(i);
+		}
+		return p;
+	}
+
+	public Personaje getByNombre(Personaje per) {
+		Personaje p = null;
+		for (Personaje personaje : personajes) {
+			if (personaje.getNombre().equals(per.getNombre())) {
+				p = personaje;
+				break;
+			}
+		}
+		return p;
 	}
 
 	public void update(Personaje per) throws ApplicationException {
@@ -40,14 +65,5 @@ public class DataPersonaje {
 		else {
 			throw new ApplicationException("El personaje no existe");
 		}
-	}
-
-	public Personaje getByCod(Personaje per) {
-		Personaje p = null;
-		int i = personajes.indexOf(per);
-		if (i >= 0) {
-			p = personajes.get(i);
-		}
-		return p;
 	}
 }

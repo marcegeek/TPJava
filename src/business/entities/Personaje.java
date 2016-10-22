@@ -1,7 +1,7 @@
 package business.entities;
 
 public class Personaje {
-	public static final int PUNTOS_INICIALES = 200;
+	public static final int PUNTOS_INICIALES = 200, MAX_DEFENSA = 20, MAX_EVASION = 80;
 	private int codPersonaje;
 	private String nombre;
 	private int puntosTotales, vida, energia, defensa, evasion;
