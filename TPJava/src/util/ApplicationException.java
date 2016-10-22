@@ -1,35 +1,22 @@
 package util;
 
-public class ApplicationException extends Exception {
+import org.apache.logging.log4j.Level;
 
-	/**
-	 * 
-	 */
+public class ApplicationException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public ApplicationException() {
 		super();
-		// TODO Auto-generated constructor stub
+		SuperLogger.logger.error("Empty exception");
 	}
-
-	public ApplicationException(String arg0, Throwable arg1, boolean arg2,
-			boolean arg3) {
-		super(arg0, arg1, arg2, arg3);
-		// TODO Auto-generated constructor stub
+	
+	public ApplicationException(String message) {
+		super(message);
+		SuperLogger.logger.log(Level.ERROR, message);
 	}
-
-	public ApplicationException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
-	}
-
-	public ApplicationException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
-
-	public ApplicationException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
+	
+	public ApplicationException(String message, Throwable cause) {
+		super(message,cause);
+		SuperLogger.logger.log(Level.ERROR, message, cause);
 	}
 }

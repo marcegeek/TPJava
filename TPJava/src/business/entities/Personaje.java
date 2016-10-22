@@ -1,14 +1,13 @@
 package business.entities;
 
-import util.ApplicationException;
-
 public class Personaje {
+	public static final int PUNTOS_INICIALES = 200;
 	private int codPersonaje;
 	private String nombre;
-	private int vida, energia, defensa, evasion, puntosTotales;
+	private int puntosTotales, vida, energia, defensa, evasion;
 
 	public Personaje() {
-		this.setPuntosTotales(200);
+		this.setPuntosTotales(PUNTOS_INICIALES);
 	}
 
 	public int getCodPersonaje() {
@@ -31,52 +30,32 @@ public class Personaje {
 		return vida;
 	}
 
-	public void setVida(int vida) throws ApplicationException {
-		if (validarPuntosVida(vida)) {
-			this.vida = vida;
-		}
-		else {
-			throw new ApplicationException("Demasiados puntos de vida");
-		}
+	public void setVida(int vida) {
+		this.vida = vida;
 	}
 
 	public int getEnergia() {
 		return energia;
 	}
 
-	public void setEnergia(int energia)  throws ApplicationException {
-		if (validarPuntosEnergia(energia)) {
-			this.energia = energia;
-		}
-		else {
-			throw new ApplicationException("Demasiados puntos de energía");
-		}
+	public void setEnergia(int energia) {
+		this.energia = energia;
 	}
 
 	public int getDefensa() {
 		return defensa;
 	}
 
-	public void setDefensa(int defensa) throws ApplicationException {
-		if (validarPuntosDefensa(defensa)) {
-			this.defensa = defensa;
-		}
-		else {
-			throw new ApplicationException("Demasiados puntos de defensa");
-		}
+	public void setDefensa(int defensa) {
+		this.defensa = defensa;
 	}
 
 	public int getEvasion() {
 		return evasion;
 	}
 
-	public void setEvasion(int evasion) throws ApplicationException {
-		if (validarPuntosEvasion(evasion)) {
-			this.evasion = evasion;
-		}
-		else {
-			throw new ApplicationException("Demasiados puntos de evasión");
-		}
+	public void setEvasion(int evasion) {
+		this.evasion = evasion;
 	}
 
 	public int getPuntosTotales() {
@@ -88,52 +67,17 @@ public class Personaje {
 		return per instanceof Personaje && ((Personaje)per).getCodPersonaje() == this.getCodPersonaje();
 	}
 
-	private boolean validarPuntosVida(int vida) {
-		return vida >= 0 && getEnergia() + getDefensa() + getEvasion() + vida <= getPuntosTotales();
+	boolean recibirAtaque() {
+		// evade el ataque si (numAleatorio * 100) < puntosDeEvasion
+		// no lo evade cuando (numAleatorio * 100) >= puntosDeEvasion
+		return Math.random() * 100 >= getEvasion();
 	}
 
-	private boolean validarPuntosEnergia(int energia) {
-		return energia >= 0 && getVida() + getDefensa() + getEvasion() + energia <= getPuntosTotales();
+	public boolean atacar(Personaje oponente) {
+		return oponente.recibirAtaque();
 	}
-
-	private boolean validarPuntosDefensa(int defensa) {
-		return defensa >= 0 && defensa <= 20 && getVida() + getEnergia() + getEvasion() + defensa <= getPuntosTotales();
-	}
-
-	private boolean validarPuntosEvasion(int evasion) {
-		return evasion >= 0 && evasion <= 80 && getVida() + getEnergia() + getDefensa() + evasion <= getPuntosTotales();
-	}
-
-	/*boolean recibirAtaque(int puntos) {
-		if (Math.random() * 100 > getEvasion()) {
-			return false;
-		}
-		if (getVida() >= puntos) {
-			this.vida = this.vida - puntos;
-		}
-		else {
-			this.vida = 0;
-		}
-		return true;
-	}*/
-
-	/*public boolean atacar(Personaje oponente, int energiaAUtilizar) throws ApplicationException {
-		boolean oponenteAtacado;
-		if (energiaAUtilizar > getEnergia()) {
-			throw new ApplicationException("intenta utilizar demasiada energía");
-		}
-		oponenteAtacado = oponente.recibirAtaque(energiaAUtilizar);
-		setEnergia(getEnergia() - energiaAUtilizar);
-		return oponenteAtacado;
-	}*/
-
+		
 	public void setPuntosTotales(int puntosTotales) {
 		this.puntosTotales = puntosTotales;
 	}
-
-	/*public void defender() {
-		// FIXME implementar método
-		int energiaARecuperar = EnergiaAlComenzar * getDefensa() / 100;
-		int vidaARecuperar = VidaAlComenzar * getDefensa() / 100;
-	}*/
 }
