@@ -1,16 +1,20 @@
 package data;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Properties;
 
 import util.ApplicationException;
 
 public class ConnectionFactory {
 
 	private String dbDriver="com.mysql.jdbc.Driver";
-	private String host="localhost";
+	private String host;
 	private String port="3306";
-	private String user="root";
-	private String pass="";
+	private String user;
+	private String pass;
 	private String db="turn_based_combat";
 	private String dbType="mysql";
 
@@ -20,8 +24,18 @@ public class ConnectionFactory {
 	private ConnectionFactory() throws ApplicationException {
 		try {
 			Class.forName(dbDriver);
+
+			Properties props = new Properties();
+			InputStream input = new FileInputStream("db.properties");
+			props.load(input);
+
+			host = props.getProperty("host");
+			user = props.getProperty("user");
+			pass = props.getProperty("pass");
 		} catch (ClassNotFoundException e) {
 			throw new ApplicationException("Error del Driver JDBC",e);
+		} catch (IOException e) {
+			throw new ApplicationException("Error recuperando configuraciÃ³n de la DB");
 		}
 	}
 
@@ -38,9 +52,7 @@ public class ConnectionFactory {
 		try {
 			if (conn == null || conn.isClosed()) {
 				conn = DriverManager.getConnection(
-							"jdbc:"+dbType+"://"+host+":"+port+"/"+
-							db+"?user="+user+"&password="+pass
-						);
+							"jdbc:"+dbType+"://"+host+":"+port+"/"+db,user,pass);
 				cantConn++;
 			}
 		} catch (SQLException e) {
@@ -57,7 +69,7 @@ public class ConnectionFactory {
 			}
 		}
 		catch (SQLException e) {
-			throw new ApplicationException("Error al cerrar la conexión", e);
+			throw new ApplicationException("Error al cerrar la conexiï¿½n", e);
 		}
 	}
 }
