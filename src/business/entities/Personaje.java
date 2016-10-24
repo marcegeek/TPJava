@@ -1,10 +1,15 @@
 package business.entities;
 
+import util.ApplicationException;
+
 public class Personaje extends BusinessEntity {
 	public static final int PUNTOS_INICIALES = 200, MAX_DEFENSA = 20, MAX_EVASION = 80;
 	private int codPersonaje;
 	private String nombre;
 	private int puntosTotales, vida, energia, defensa, evasion;
+
+	// a utilizar en el combate
+	private int usoEnergia, danio;
 
 	public Personaje() {
 		this.setPuntosTotales(PUNTOS_INICIALES);
@@ -68,17 +73,70 @@ public class Personaje extends BusinessEntity {
 		return per instanceof Personaje && ((Personaje)per).getCodPersonaje() == this.getCodPersonaje();
 	}
 
-	boolean recibirAtaque() {
+	boolean recibirAtaque(int energia) {
 		// evade el ataque si (numAleatorio * 100) < puntosDeEvasion
 		// no lo evade cuando (numAleatorio * 100) >= puntosDeEvasion
-		return Math.random() * 100 >= getEvasion();
+		boolean recibeAtaque = Math.random() * 100 >= getEvasion();
+		if (recibeAtaque) {
+			recibirDanio(energia);
+		}
+		return recibeAtaque;
 	}
 
-	public boolean atacar(Personaje oponente) {
-		return oponente.recibirAtaque();
+	public boolean atacar(Personaje oponente, int energiaUtilizar) throws ApplicationException {
+		if (energiaUtilizar > getEnergiaActual()) {
+			throw new ApplicationException("Energía insuficiente para realizar el ataque");
+		}
+		usarEnergia(energiaUtilizar);
+		return oponente.recibirAtaque(energia);
+	}
+
+	public void defender() {
+	    int energiaARecuperar = getEnergia() * getDefensa() / 100;
+	    int vidaARecuperar = getVida() * getDefensa() / 250;
+	    setUsoEnergia(getUsoEnergia() - energiaARecuperar);
+    	setDanio(getDanio() - vidaARecuperar);
+    	if (getEnergiaActual() > getEnergia()) {
+    		setUsoEnergia(0);
+    	}
+    	if (getVidaActual() > getVida()) {
+    		setDanio(0);
+    	}
 	}
 		
 	public void setPuntosTotales(int puntosTotales) {
 		this.puntosTotales = puntosTotales;
+	}
+
+	private void usarEnergia(int energiaUtilizar) {
+		setUsoEnergia(getUsoEnergia() + energiaUtilizar);
+	}
+
+	private void recibirDanio(int energia) {
+		setDanio(getDanio() + energia);
+	}
+
+	public int getUsoEnergia() {
+		return usoEnergia;
+	}
+
+	public void setUsoEnergia(int usoEnergia) {
+		this.usoEnergia = usoEnergia;
+	}
+
+	public int getDanio() {
+		return danio;
+	}
+
+	public void setDanio(int danio) {
+		this.danio = danio;
+	}
+
+	public int getEnergiaActual() {
+		return energia - usoEnergia;
+	}
+
+	public int getVidaActual() {
+		return vida - danio;
 	}
 }
