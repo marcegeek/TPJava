@@ -336,6 +336,7 @@ public class EditarCrearPersonajeDialog extends JDialog {
 	}
 
 	protected void cerrar() {
+		setVisible(false);
 		dispose();
 	}
 
@@ -350,7 +351,7 @@ public class EditarCrearPersonajeDialog extends JDialog {
 			}
 			cerrar();
 		} catch (ApplicationException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage());
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
