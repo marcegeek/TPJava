@@ -91,7 +91,7 @@ public class CtrlCombate {
 		int energiaAnterior = getTurno().getEnergiaActual();
 		getTurno().defender();
 		sucesosCombate += getTurno().getNombre() + " recuperó " + (getTurno().getVidaActual() - vidaAnterior) +
-				" puntos de vida y " + (getTurno().getEnergia() - energiaAnterior) + "de energía\n";
+				" puntos de vida y " + (getTurno().getEnergia() - energiaAnterior) + " de energía\n";
 		cambiarTurno();
 	}
 
