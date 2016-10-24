@@ -30,6 +30,8 @@ import javax.swing.JSlider;
 import util.ApplicationException;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 public class CombatWindow {
 	Personaje personaje1, personaje2;
@@ -49,6 +51,8 @@ public class CombatWindow {
 	private JButton btnAtacar;
 	private JSlider sldEnergiaUtilizar;
 	private JLabel lblPersTurno;
+	private JScrollPane scrollPane;
+	private JTextPane txtPaneSucesosCombate;
 
 	/**
 	 * Launch the application.
@@ -79,7 +83,7 @@ public class CombatWindow {
 	private void initialize() {
 		frmCombate = new JFrame();
 		frmCombate.setTitle("Combate");
-		frmCombate.setBounds(100, 100, 600, 352);
+		frmCombate.setBounds(100, 100, 615, 352);
 		frmCombate.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCombate.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -197,15 +201,18 @@ public class CombatWindow {
 		gbc_lblEnergia2.gridy = 2;
 		panelSeleccion.add(lblEnergia2, gbc_lblEnergia2);
 		
-		JPanel panel = new JPanel();
-		frmCombate.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BorderLayout(0, 0));
+		scrollPane = new JScrollPane();
+		frmCombate.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		
+		txtPaneSucesosCombate = new JTextPane();
+		txtPaneSucesosCombate.setEditable(false);
+		scrollPane.setViewportView(txtPaneSucesosCombate);
 		
 		JPanel pnlAccionesCombate = new JPanel();
 		frmCombate.getContentPane().add(pnlAccionesCombate, BorderLayout.SOUTH);
 		GridBagLayout gbl_pnlAccionesCombate = new GridBagLayout();
-		gbl_pnlAccionesCombate.columnWidths = new int[]{120, 259, 55, 145, 0};
-		gbl_pnlAccionesCombate.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_pnlAccionesCombate.columnWidths = new int[]{120, 259, 55, 181, 0};
+		gbl_pnlAccionesCombate.rowHeights = new int[]{37, 30, 0, 0};
 		gbl_pnlAccionesCombate.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_pnlAccionesCombate.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		pnlAccionesCombate.setLayout(gbl_pnlAccionesCombate);
@@ -249,6 +256,7 @@ public class CombatWindow {
 		});
 		sldEnergiaUtilizar.setEnabled(false);
 		GridBagConstraints gbc_sldEnergiaUtilizar = new GridBagConstraints();
+		gbc_sldEnergiaUtilizar.weightx = 1.0;
 		gbc_sldEnergiaUtilizar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sldEnergiaUtilizar.insets = new Insets(0, 0, 5, 5);
 		gbc_sldEnergiaUtilizar.gridx = 1;
@@ -311,9 +319,6 @@ public class CombatWindow {
 
 	protected void atacar() {
 		try {
-			Personaje turno = controlador.getTurno();
-			Personaje opo = controlador.getOponente();
-			JOptionPane.showMessageDialog(null,turno.getNombre() + " atacole a " + opo.getNombre());
 			controlador.atacar(sldEnergiaUtilizar.getValue());
 			actualizar();
 			if (controlador.isCombateFinalizado()) {
@@ -340,8 +345,11 @@ public class CombatWindow {
 		lblVida2.setText(vidaStr2);
 		lblEnergia2.setText(enerStr2);
 
+		txtPaneSucesosCombate.setText(controlador.getSucesosCombate());
+
 		lblPersTurno.setText(controlador.getTurno().getNombre());
 		sldEnergiaUtilizar.setMaximum(controlador.getTurno().getEnergiaActual());
+		sldEnergiaUtilizar.setValue(0);
 	}
 
 	private void finalizarCombate() {
@@ -366,6 +374,7 @@ public class CombatWindow {
 		lblVida2.setText("");
 		lblEnergia1.setText("");
 		lblEnergia2.setText("");
+		txtPaneSucesosCombate.setText("");
 		lblPersTurno.setText("");
 		sldEnergiaUtilizar.setValue(0);
 		habilitarControles(false);
