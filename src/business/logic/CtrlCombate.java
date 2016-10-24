@@ -11,6 +11,7 @@ public class CtrlCombate {
 	Personaje turno;
 	Personaje ganador;
 	private boolean combateFinalizado;
+	private String sucesosCombate = "";
 
 	public CtrlCombate(Personaje pers1, Personaje pers2) throws ApplicationException {
 		dataPers = new DataPersonaje();
@@ -55,7 +56,15 @@ public class CtrlCombate {
 	public boolean atacar(int energia) throws ApplicationException {
 		Personaje per = getTurno();
 		Personaje oponente = getOponente();
+		int vidaAnterior = oponente.getVidaActual();
 		boolean atacado = per.atacar(oponente,energia);
+		if (atacado) {
+			sucesosCombate += per.getNombre() + " quitó " + (vidaAnterior - oponente.getVidaActual()) +
+					" puntos de vida a " + oponente.getNombre() + "\n";
+		}
+		else {
+			sucesosCombate += oponente.getNombre() + " evadió el ataque de " + per.getNombre() + "\n";
+		}
 		if (oponente.getVidaActual() <= 0) {
 			finalizarCombate();
 		}
@@ -78,7 +87,11 @@ public class CtrlCombate {
 	}
 
 	public void defender() {
+		int vidaAnterior = getTurno().getVidaActual();
+		int energiaAnterior = getTurno().getEnergiaActual();
 		getTurno().defender();
+		sucesosCombate += getTurno().getNombre() + " recuperó " + (getTurno().getVidaActual() - vidaAnterior) +
+				" puntos de vida y " + (getTurno().getEnergia() - energiaAnterior) + "de energía\n";
 		cambiarTurno();
 	}
 
@@ -88,5 +101,9 @@ public class CtrlCombate {
 
 	public Personaje getGanador() {
 		return ganador;
+	}
+
+	public String getSucesosCombate() {
+		return sucesosCombate;
 	}
 }
