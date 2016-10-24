@@ -52,7 +52,7 @@ public class ConnectionFactory {
 		try {
 			if (conn == null || conn.isClosed()) {
 				conn = DriverManager.getConnection(
-							"jdbc:"+dbType+"://"+host+":"+port+"/"+db+"&useSSL=false",user,pass);
+							"jdbc:"+dbType+"://"+host+":"+port+"/"+db+"?useSSL=false",user,pass);
 				cantConn++;
 			}
 		} catch (SQLException e) {
