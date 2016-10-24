@@ -83,11 +83,11 @@ public class Personaje extends BusinessEntity {
 		return recibeAtaque;
 	}
 
-	public boolean atacar(Personaje oponente, int energiaUtilizar) throws ApplicationException {
-		if (energiaUtilizar > getEnergiaActual()) {
+	public boolean atacar(Personaje oponente, int energia) throws ApplicationException {
+		if (energia > getEnergiaActual()) {
 			throw new ApplicationException("Energía insuficiente para realizar el ataque");
 		}
-		usarEnergia(energiaUtilizar);
+		usarEnergia(energia);
 		return oponente.recibirAtaque(energia);
 	}
 
