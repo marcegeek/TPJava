@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `turn_based_combat` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
-USE `turn_based_combat`;
+CREATE DATABASE  IF NOT EXISTS `turn_based_combt` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
+USE `turn_based_combt`;
 -- MySQL dump 10.15  Distrib 10.0.27-MariaDB, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: turn_based_combat
+-- Host: localhost    Database: turn_based_combt
 -- ------------------------------------------------------
 -- Server version	10.0.27-MariaDB-2
 
