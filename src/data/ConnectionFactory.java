@@ -15,7 +15,7 @@ public class ConnectionFactory {
 	private String port="3306";
 	private String user;
 	private String pass;
-	private String db="turn_based_combat";
+	private String db="turn_based_combt";
 	private String dbType="mysql";
 
 	private Connection conn;
@@ -52,7 +52,7 @@ public class ConnectionFactory {
 		try {
 			if (conn == null || conn.isClosed()) {
 				conn = DriverManager.getConnection(
-							"jdbc:"+dbType+"://"+host+":"+port+"/"+db,user,pass);
+							"jdbc:"+dbType+"://"+host+":"+port+"/"+db+"&useSSL=true",user,pass);
 				cantConn++;
 			}
 		} catch (SQLException e) {
