@@ -13,15 +13,6 @@ public class DataPersonaje {
 		personajes = new ArrayList<>();
 	}
 
-	public void add(Personaje per) throws ApplicationException {
-		if (!personajes.contains(per)) {
-			personajes.add(per);
-		}
-		else {
-			throw new ApplicationException("El personaje ya existe");
-		}
-	}
-
 	public List<Personaje> getAll() {
 		return personajes;
 	}
@@ -46,7 +37,32 @@ public class DataPersonaje {
 		return p;
 	}
 
-	public void update(Personaje per) throws ApplicationException {
+	public void save(Personaje per) throws ApplicationException {
+		switch (per.getState()) {
+			case NEW:
+				add(per);
+				break;
+			case MODIFIED:
+				update(per);
+				break;
+			case DELETED:
+				delete(per);
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void add(Personaje per) throws ApplicationException {
+		if (!personajes.contains(per)) {
+			personajes.add(per);
+		}
+		else {
+			throw new ApplicationException("El personaje ya existe");
+		}
+	}
+
+	private void update(Personaje per) throws ApplicationException {
 		if (personajes.contains(per)) {
 			Personaje perEnc = this.getByCod(per);
 			perEnc.setNombre(per.getNombre());
@@ -58,7 +74,7 @@ public class DataPersonaje {
 		}
 	}
 
-	public void delete(Personaje per) throws ApplicationException {
+	private void delete(Personaje per) throws ApplicationException {
 		if (personajes.contains(per)) {
 			personajes.remove(per);
 		}
