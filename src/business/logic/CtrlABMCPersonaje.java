@@ -13,11 +13,11 @@ public class CtrlABMCPersonaje {
 		dataPer = new DataPersonaje();
 	}
 
-	public void add(Personaje per) throws ApplicationException {
+	public void save(Personaje per) throws ApplicationException {
 		if (!validarPersonaje(per)) {
 			throw new ApplicationException("Los datos del personaje no son válidos");
 		}
-		dataPer.add(per);
+		dataPer.save(per);
 	}
 
 	public List<Personaje> getAll() throws ApplicationException {
@@ -30,17 +30,6 @@ public class CtrlABMCPersonaje {
 
 	public Personaje getByNombre(Personaje per) throws ApplicationException {
 		return dataPer.getByNombre(per);
-	}
-
-	public void update(Personaje per) throws ApplicationException {
-		if (!validarPersonaje(per)) {
-			throw new ApplicationException("Los datos del personaje no son válidos");
-		}
-		dataPer.update(per);
-	}
-
-	public void delete(Personaje per) throws ApplicationException {
-		dataPer.delete(per);
 	}
 
 	private boolean validarPersonaje(Personaje per) {

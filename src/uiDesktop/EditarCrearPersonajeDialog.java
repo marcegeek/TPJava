@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 
+import business.entities.BusinessEntity.States;
 import business.entities.Personaje;
 import business.logic.CtrlABMCPersonaje;
 
@@ -37,7 +38,6 @@ public class EditarCrearPersonajeDialog extends JDialog {
 
 	private CtrlABMCPersonaje controlador;
 	private Personaje personajeCreandoEditando;
-	private boolean personajeNuevo;
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtCodPersonaje;
@@ -58,14 +58,14 @@ public class EditarCrearPersonajeDialog extends JDialog {
 	public EditarCrearPersonajeDialog() {
 		controlador = new CtrlABMCPersonaje();
 		personajeCreandoEditando = new Personaje();
-		personajeNuevo = true;
+		personajeCreandoEditando.setState(States.NEW);
 		initialize();
 	}
 
 	public EditarCrearPersonajeDialog(Personaje per) {
 		this();
 		personajeCreandoEditando = per;
-		personajeNuevo = false;
+		personajeCreandoEditando.setState(States.MODIFIED);
 		mapearAFormulario(per);
 	}
 
@@ -343,12 +343,7 @@ public class EditarCrearPersonajeDialog extends JDialog {
 	protected void guardar() {
 		mapearDeFormulario();
 		try {
-			if (personajeNuevo) {
-				controlador.add(personajeCreandoEditando);
-			}
-			else {
-				controlador.update(personajeCreandoEditando);
-			}
+			controlador.save(personajeCreandoEditando);
 			cerrar();
 		} catch (ApplicationException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

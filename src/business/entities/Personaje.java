@@ -1,6 +1,6 @@
 package business.entities;
 
-public class Personaje {
+public class Personaje extends BusinessEntity {
 	public static final int PUNTOS_INICIALES = 200, MAX_DEFENSA = 20, MAX_EVASION = 80;
 	private int codPersonaje;
 	private String nombre;
@@ -8,6 +8,7 @@ public class Personaje {
 
 	public Personaje() {
 		this.setPuntosTotales(PUNTOS_INICIALES);
+		setState(States.UNMODIFIED);
 	}
 
 	public int getCodPersonaje() {

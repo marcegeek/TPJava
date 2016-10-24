@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import util.ApplicationException;
+import business.entities.BusinessEntity.States;
 import business.entities.Personaje;
 import business.logic.CtrlABMCPersonaje;
 
@@ -134,7 +135,8 @@ public class ABMCPersonajeDialog extends JDialog {
 				"Eliminar personaje", JOptionPane.YES_NO_OPTION);
 		if (resp == JOptionPane.YES_OPTION) {
 			try {
-				controlador.delete(per);
+				per.setState(States.DELETED);
+				controlador.save(per);
 				traerPersonajes();
 			} catch (ApplicationException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

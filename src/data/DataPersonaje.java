@@ -12,43 +12,6 @@ public class DataPersonaje {
 	public DataPersonaje() {
 	}
 
-	public void add(Personaje per) throws ApplicationException {
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			stmt = ConnectionFactory.getInstance().getConn().prepareStatement(
-					"insert into personajes (nombre,vida,energia,defensa,evasion,puntos_totales) " +
-					"values (?,?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
-			// PreparedStatement.RETURN_GENERATED_KEYS to be able to retrieve id generated on the db
-			// by the autoincrement column. Otherwise don't use it
-
-			stmt.setString(1, per.getNombre());
-			stmt.setInt(2, per.getVida());
-			stmt.setInt(3, per.getEnergia());
-			stmt.setInt(4, per.getDefensa());
-			stmt.setInt(5, per.getEvasion());
-			stmt.setInt(6, per.getPuntosTotales());
-			stmt.execute();
-
-			//after executing the insert use the following lines to retrieve the id
-			rs = stmt.getGeneratedKeys();
-			if (rs != null && rs.next()) {
-				per.setCodPersonaje(rs.getInt(1));
-			}
-		} catch (SQLException e) {
-			throw new ApplicationException("Error agregando personaje", e);
-		} finally {
-			try {
-				if (rs != null) rs.close();
-				if (stmt != null) stmt.close();
-				ConnectionFactory.getInstance().releaseConn();
-			} catch (SQLException e) {
-				throw new ApplicationException("Error cerrando la conexión", e);
-			}
-		}
-	}
-
 	public List<Personaje> getAll() throws ApplicationException {
 		ArrayList<Personaje> personajes = new ArrayList<>();
 
@@ -160,7 +123,60 @@ public class DataPersonaje {
 		return p;
 	} 
 
-	public void update(Personaje per) throws ApplicationException {
+	public void save(Personaje per) throws ApplicationException {
+		switch (per.getState()) {
+			case NEW:
+				add(per);
+				break;
+			case MODIFIED:
+				update(per);
+				break;
+			case DELETED:
+				delete(per);
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void add(Personaje per) throws ApplicationException {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = ConnectionFactory.getInstance().getConn().prepareStatement(
+					"insert into personajes (nombre,vida,energia,defensa,evasion,puntos_totales) " +
+					"values (?,?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
+			// PreparedStatement.RETURN_GENERATED_KEYS to be able to retrieve id generated on the db
+			// by the autoincrement column. Otherwise don't use it
+
+			stmt.setString(1, per.getNombre());
+			stmt.setInt(2, per.getVida());
+			stmt.setInt(3, per.getEnergia());
+			stmt.setInt(4, per.getDefensa());
+			stmt.setInt(5, per.getEvasion());
+			stmt.setInt(6, per.getPuntosTotales());
+			stmt.execute();
+
+			//after executing the insert use the following lines to retrieve the id
+			rs = stmt.getGeneratedKeys();
+			if (rs != null && rs.next()) {
+				per.setCodPersonaje(rs.getInt(1));
+			}
+		} catch (SQLException e) {
+			throw new ApplicationException("Error agregando personaje", e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				ConnectionFactory.getInstance().releaseConn();
+			} catch (SQLException e) {
+				throw new ApplicationException("Error cerrando la conexión", e);
+			}
+		}
+	}
+
+	private void update(Personaje per) throws ApplicationException {
 		PreparedStatement stmt = null;
 
 		try {
@@ -191,7 +207,7 @@ public class DataPersonaje {
 		}
 	}
 
-	public void delete(Personaje per) throws ApplicationException {
+	private void delete(Personaje per) throws ApplicationException {
 		PreparedStatement stmt = null;
 
 		try {
