@@ -58,7 +58,7 @@ public class DataPersonaje {
 			stmt = ConnectionFactory.getInstance().getConn().prepareStatement(
 					"select id, nombre, vida, energia, defensa, evasion, puntos_totales from personajes");
 			rs = stmt.executeQuery();
-			if (rs != null && rs.next()) {
+			while (rs != null && rs.next()) {
 				Personaje p = new Personaje();
 				p.setCodPersonaje(rs.getInt("id"));
 				p.setNombre(rs.getString("nombre"));
